@@ -1,24 +1,15 @@
 import { useContext } from "react";
 import { themeConfig } from "../../contexts/theme";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import type { Todo } from "../../App";
+import type { Todo, TodoFilter } from "../../hooks/useTodo";
 import IconCheck from "/images/icon-check.svg";
-
-
-// const todos = [
-// 	{ id: 1, text: "Complete the project" },
-// 	{ id: 2, text: "Read a book" },
-// 	{ id: 3, text: "Go for a walk" },
-// 	{ id: 4, text: "Organize the workspace" },
-// 	{ id: 5, text: "Plan the next day" },
-// ];
 
 interface TodoListProps {
 	todoList: Todo[];
 	toggleTodoCompleted: (id: number) => void;
-	setFilter: (filter: "all" | "active" | "completed") => void;
-    filter: "all" | "active" | "completed"
-    clearCompleted: () => void;
+	setFilter: (filter: TodoFilter) => void;
+	filter: TodoFilter;
+	clearCompleted: () => void;
 }
 
 const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompleted }: TodoListProps) => {
