@@ -13,6 +13,7 @@ export interface Todo {
 
 function App() {
 	const [todoList, setTodoList] = useState<Todo[]>([]);
+	const [filter, setFilter] = useState<"all" | "active" | "completed">("all");
 
 	const addTodo = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -51,11 +52,28 @@ function App() {
 		setTodoList(newTodoList);
 	};
 
+	const filteredTodos = todoList.filter((todo) => {
+		if (filter === "active") return !todo.completed;
+		if (filter === "completed") return todo.completed;
+
+		return true;
+	});
+
+	const clearCompleted = () => {
+		setTodoList((prev) => prev.filter((todo) => !todo.completed));
+	};
+
 	return (
 		<TodoContainer>
 			<TodoHeader />
 			<TodoForm addTodo={addTodo} />
-			<TodoList todoList={todoList} toggleTodoCompleted={ toggleTodoCompleted} />
+			<TodoList
+				todoList={filteredTodos}
+				toggleTodoCompleted={toggleTodoCompleted}
+				setFilter={setFilter}
+				filter={filter}
+				clearCompleted={clearCompleted}
+			/>
 		</TodoContainer>
 	);
 }

@@ -4,6 +4,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import type { Todo } from "../../App";
 import IconCheck from "/images/icon-check.svg";
 
+
 // const todos = [
 // 	{ id: 1, text: "Complete the project" },
 // 	{ id: 2, text: "Read a book" },
@@ -15,9 +16,12 @@ import IconCheck from "/images/icon-check.svg";
 interface TodoListProps {
 	todoList: Todo[];
 	toggleTodoCompleted: (id: number) => void;
+	setFilter: (filter: "all" | "active" | "completed") => void;
+    filter: "all" | "active" | "completed"
+    clearCompleted: () => void;
 }
 
-const TodoList = ({ todoList, toggleTodoCompleted }: TodoListProps) => {
+const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompleted }: TodoListProps) => {
 	const { theme: themeName } = useContext(ThemeContext);
 
 	const currentTheme = themeConfig[themeName];
@@ -63,7 +67,7 @@ const TodoList = ({ todoList, toggleTodoCompleted }: TodoListProps) => {
 											rounded-full
 											cursor-pointer
 											${currentTheme.todo.backgroundColor}
-                                            ${todo.completed ? "bg-[linear-gradient(to_right,hsl(192,100%,67%),hsl(280,87%,65%))]" : ""}
+                                            ${todo.completed ? "bg-[linear-gradient(to_right,hsl(192,100%,67%),hsl(280,87%,65%))]" : ""}    
 										`}>
 										{todo.completed && (
 											<img
@@ -86,7 +90,6 @@ const TodoList = ({ todoList, toggleTodoCompleted }: TodoListProps) => {
 						</li>
 					))}
 				</ul>
-				{todoList.length > 0 && (
 					<div
 						className={`
 						text-sm
@@ -98,20 +101,32 @@ const TodoList = ({ todoList, toggleTodoCompleted }: TodoListProps) => {
 						<p>{todoList.length} Items Total</p>
 
 						<div className="hidden sm:flex gap-4">
-							<button className="text-bright-blue font-bold cursor-pointer">
+							<button
+								onClick={() => setFilter("all")}
+								className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>
 								All
 							</button>
 
-							<button className={filterButtonClass}>Active</button>
+							<button
+								onClick={() => setFilter("active")}
+								className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+								Active
+							</button>
 
-							<button className={filterButtonClass}>Completed</button>
+							<button
+								onClick={() => setFilter("completed")}
+								className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+								Completed
+							</button>
 						</div>
 
-						<button className={filterButtonClass}>Clear Selected</button>
+						<button 
+                        onClick={clearCompleted}
+                        className={filterButtonClass}>Clear Selected</button>
 					</div>
-				)}
+				
 			</div>
-			{todoList.length > 0 && (
+			
 				<div
 					className={`
 					${currentTheme.todo.backgroundColor}
@@ -124,13 +139,19 @@ const TodoList = ({ todoList, toggleTodoCompleted }: TodoListProps) => {
 					mt-4
 					sm:hidden
 				`}>
-					<button className="text-bright-blue font-bold cursor-pointer">All</button>
+					<button
+                    onClick={() => setFilter("all")}
+                    className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>All</button>
 
-					<button className={filterButtonClass}>Active</button>
+					<button
+                    onClick={() => setFilter("active")}
+                    className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>Active</button>
 
-					<button className={filterButtonClass}>Completed</button>
+					<button 
+                    onClick={() => setFilter("completed")}
+                    className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>Completed</button>
 				</div>
-			)}
+			
 		</>
 	);
 };
