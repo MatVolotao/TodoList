@@ -48,13 +48,13 @@ export const useTodo = (initialTodos: Todo[] = []) => {
 		);
 	};
 
-	const deleteTodo = (id: number) => {
-		setTodoList((prev) => prev.filter((todo) => todo.id !== id));
-	};
-
 	const clearCompleted = () => {
 		setTodoList((prev) => prev.filter((todo) => !todo.completed));
 	};
+
+    function removeTodo(id: number) {
+        setTodoList(prev => prev.filter(todo => todo.id !== id))
+    }
 
 	const filteredTodos = todoList.filter((todo) => {
 		if (filter === "active") return !todo.completed;
@@ -70,7 +70,7 @@ export const useTodo = (initialTodos: Todo[] = []) => {
 		setFilter,
 		addTodo,
 		toggleTodoCompleted,
-		deleteTodo,
 		clearCompleted,
+        removeTodo
 	};
 };

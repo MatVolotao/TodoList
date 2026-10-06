@@ -10,9 +10,17 @@ interface TodoListProps {
 	setFilter: (filter: TodoFilter) => void;
 	filter: TodoFilter;
 	clearCompleted: () => void;
+    removeTodo: (id:number) => void;
 }
 
-const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompleted }: TodoListProps) => {
+const TodoList = ({
+	todoList,
+	toggleTodoCompleted,
+	setFilter,
+	filter,
+	clearCompleted,
+    removeTodo
+}: TodoListProps) => {
 	const { theme: themeName } = useContext(ThemeContext);
 
 	const currentTheme = themeConfig[themeName];
@@ -38,6 +46,9 @@ const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompl
 								border-b
 								last:border-b-0
 								${currentTheme.todo.borderColor}
+                                flex
+                                items-center
+								justify-between
 							`}>
 							<div className="flex items-center gap-4">
 								<span
@@ -78,48 +89,52 @@ const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompl
 									{todo.text}
 								</p>
 							</div>
+							<span
+								onClick={() => removeTodo(todo.id) }
+								className="flex items-center justify-center text-4xl leading-none text-gray-400 cursor-pointer">
+								×
+							</span>
 						</li>
 					))}
 				</ul>
-					<div
-						className={`
+				<div
+					className={`
 						text-sm
 						flex
 						justify-between
 						p-4
 						${currentTheme.layout.textColor}
 					`}>
-						<p>{todoList.length} Items Total</p>
+					<p>{todoList.length} Items Total</p>
 
-						<div className="hidden sm:flex gap-4">
-							<button
-								onClick={() => setFilter("all")}
-								className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>
-								All
-							</button>
+					<div className="hidden sm:flex gap-4">
+						<button
+							onClick={() => setFilter("all")}
+							className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>
+							All
+						</button>
 
-							<button
-								onClick={() => setFilter("active")}
-								className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
-								Active
-							</button>
+						<button
+							onClick={() => setFilter("active")}
+							className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+							Active
+						</button>
 
-							<button
-								onClick={() => setFilter("completed")}
-								className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
-								Completed
-							</button>
-						</div>
-
-						<button 
-                        onClick={clearCompleted}
-                        className={filterButtonClass}>Clear Selected</button>
+						<button
+							onClick={() => setFilter("completed")}
+							className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+							Completed
+						</button>
 					</div>
-				
+
+					<button onClick={clearCompleted} className={filterButtonClass}>
+						Clear Completed Tasks
+					</button>
+				</div>
 			</div>
-			
-				<div
-					className={`
+
+			<div
+				className={`
 					${currentTheme.todo.backgroundColor}
 					${currentTheme.layout.textColor}
 					flex
@@ -130,19 +145,24 @@ const TodoList = ({ todoList, toggleTodoCompleted, setFilter, filter, clearCompl
 					mt-4
 					sm:hidden
 				`}>
-					<button
-                    onClick={() => setFilter("all")}
-                    className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>All</button>
+				<button
+					onClick={() => setFilter("all")}
+					className={`${filter === "all" ? "text-bright-blue" : ""} font-bold cursor-pointer`}>
+					All
+				</button>
 
-					<button
-                    onClick={() => setFilter("active")}
-                    className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>Active</button>
+				<button
+					onClick={() => setFilter("active")}
+					className={`${filter === "active" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+					Active
+				</button>
 
-					<button 
-                    onClick={() => setFilter("completed")}
-                    className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>Completed</button>
-				</div>
-			
+				<button
+					onClick={() => setFilter("completed")}
+					className={`${filter === "completed" ? "text-bright-blue" : ""} ${filterButtonClass}`}>
+					Completed
+				</button>
+			</div>
 		</>
 	);
 };
